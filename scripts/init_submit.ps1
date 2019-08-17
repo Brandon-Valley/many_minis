@@ -17,8 +17,8 @@ $BRAVE_SHORTCUT_PATH = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Bra
 $FOUNDATION_URL = "https://googlenest.reevefoundation.org"
 
 
-$CONFIG_FILE_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_mini\scripts\init_submit\init_sumbit_data.csv"
-$FAILED_EMAILS_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_mini\scripts\init_submit\failed_emails.txt"
+$CONFIG_FILE_PATH   = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\second_trys.csv" #"C:\Users\Brandon\Documents\Personal_Projects\many_mini\scripts\init_submit\init_sumbit_data.csv"
+$FAILED_EMAILS_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\failed_emails.txt"
 $NUM_TABS_TO_LINK = 19
 $NUM_TABS_TO_FIRST_RAD_BTN_D = @{"chrome"    = 23 #12:41 - 1st time hit 2:44
                                  "firefox"   = 29
@@ -33,27 +33,18 @@ $NUM_TABS_TO_FIRST_RAD_BTN_D = @{"chrome"    = 23 #12:41 - 1st time hit 2:44
                                  "internet explorer" = 33} # got foucus once but never again, caught on 2nd try with notepad
 
 
-function set_up_next_round
+<#
+
+function open_new_foundation_tab
 {
-    cmd /c $BRAVE_SHORTCUT_PATH
 
-
-    start-sleep -milliseconds 500 #$OPEN_URL_WAIT_TIME
-
-    $wshell = New-Object -ComObject wscript.shell;
-    $wshell.AppActivate($browser)
-    #$wshell.AppActivate('notepad')
-
-
-
-
-
-
+    $wshell.SendKeys("^{t}") # open new tab
+    start-sleep -milliseconds $OPEN_URL_WAIT_TIME
     $wshell.SendKeys("$FOUNDATION_URL")
     start-sleep -milliseconds $DEFAULT_WAIT_TIME
     $wshell.SendKeys("{ENTER}")
-
 }
+#>
 
 
 
@@ -73,112 +64,110 @@ function init_submit_1_acc
 
 
 
-
-    try
-    {
      
-        #$wshell = New-Object -ComObject wscript.shell;
-        #$wshell.AppActivate('Chrome')
-        #$wshell.AppActivate($browser)
-        #$wshell.AppActivate('notepad')
-
-        #sleep .5
+    $wshell = New-Object -ComObject wscript.shell;
+    #$wshell.AppActivate('Chrome')
+    $wshell.AppActivate($browser)
+    #$wshell.AppActivate('notepad')
 
 
 
-        # for unknown browser, activate notepad and click on the browser befor the delay is up
-        # might only be for Yandex but need to use tabs to get to link, not click, or else 
-        # you cant open the page again with ENTER
-        if ($browser -eq "notepad")
-        {
-            $wshell.SendKeys("about to start")
-            start-sleep -milliseconds 1000
-
-        }
+    # open new foundation tab
+    $wshell.SendKeys("^{t}") # open new tab
+    start-sleep -milliseconds $OPEN_URL_WAIT_TIME
+    $wshell.SendKeys("$FOUNDATION_URL")
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
+    $wshell.SendKeys("{ENTER}")
+    start-sleep -milliseconds $OPEN_URL_WAIT_TIME
 
 
-        #close current tab then open a new one from the link
-        start-sleep -milliseconds 1000 # not sure if this needs to be longer than default
-        $wshell.SendKeys("^{w}") #close cur tab
-        start-sleep -milliseconds $DEFAULT_WAIT_TIME
-        $wshell.SendKeys("{ENTER}")
-        start-sleep -milliseconds $OPEN_URL_WAIT_TIME # need to wait a bit longer for page to load
-        #start-sleep 50000 #`````````````````````````````````````````````````````````````````````````````````````
 
+    # for unknown browser, activate notepad and click on the browser befor the delay is up
+    # might only be for Yandex but need to use tabs to get to link, not click, or else 
+    # you cant open the page again with ENTER
+    if ($browser -eq "notepad")
+    {
+        $wshell.SendKeys("about to start")
+        start-sleep -milliseconds 1000
+
+    }
+
+    <#
+    #close current tab then open a new one from the link
+    start-sleep -milliseconds 1000 # not sure if this needs to be longer than default
+    $wshell.SendKeys("^{w}") #close cur tab
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
+    $wshell.SendKeys("{ENTER}")
+    start-sleep -milliseconds $OPEN_URL_WAIT_TIME # need to wait a bit longer for page to load
+    #start-sleep 50000 #`````````````````````````````````````````````````````````````````````````````````````
+    #>
 
         
-        # get to first radio btn
-        For ($i=0; $i -le $NUM_TABS_TO_FIRST_RAD_BTN_D[$browser] ; $i++) {
+    # get to first radio btn
+    For ($i=0; $i -le $NUM_TABS_TO_FIRST_RAD_BTN_D[$browser] ; $i++) {
     
-            $wshell.SendKeys("{TAB}")
-            #$wshell.SendKeys("A")
-            #Write-Output "sent tab"
-            start-sleep -milliseconds $DEFAULT_WAIT_TIME
-            #sleep .1
+        $wshell.SendKeys("{TAB}")
+        #$wshell.SendKeys("A")
+        #Write-Output "sent tab"
+        start-sleep -milliseconds $DEFAULT_WAIT_TIME
+        #sleep .1
 
-            #Start-Sleep -s 0.5
+        #Start-Sleep -s 0.5
 
-            }
-
-
-        #check radio btns, end on 1st text box, end on 1st rad btn to skip
-        For ($i=0; $i -le 2; $i++) 
-        {
-            $wshell.SendKeys(" ")
-            #$wshell.SendKeys("A")
-            start-sleep -milliseconds 300
-            $wshell.SendKeys("{TAB}")
-            start-sleep -milliseconds 300
         }
 
-        #fill text boxes
-        $wshell.SendKeys($first_name)
 
-        start-sleep -milliseconds 300
-        $wshell.SendKeys("{TAB}")
-        start-sleep -milliseconds 300
-
-        $wshell.SendKeys($last_name)
-
-        start-sleep -milliseconds 300
-        $wshell.SendKeys("{TAB}")
-        start-sleep -milliseconds 300
-
-        $wshell.SendKeys($email)
-
-        start-sleep -milliseconds 300
-        $wshell.SendKeys("{TAB}")
-        start-sleep -milliseconds 300
-
-        $wshell.SendKeys($zip)
-
-        start-sleep -milliseconds 300
-        $wshell.SendKeys("{TAB}")
-        start-sleep -milliseconds 300
-
-
-        # skip then check I have read req rad btn
-        $wshell.SendKeys("{TAB}")
-        start-sleep -milliseconds 300
-        $wshell.SendKeys(" ")
-        start-sleep -milliseconds 300
-
-
-        # hit sumbit btn
-        $wshell.SendKeys("{TAB}")
-        start-sleep -milliseconds 300
-        $wshell.SendKeys("{TAB}")
-        start-sleep -milliseconds 300
-        $wshell.SendKeys("{ENTER}")
-
-
-    }
-    catch [System.Exception]
+    #check radio btns, end on 1st text box, end on 1st rad btn to skip
+    For ($i=0; $i -le 2; $i++) 
     {
-        Write-Both -Foreground "Red" "$($_.Exception.GetType().FullName)"
-        Write-Both -Foreground "Red" $($MyInvocation.MyCommand.ToString() + " line " +  $MyInvocation.ScriptLineNumber.ToString()`
-                   + " " + [string]$Error[0])
+        $wshell.SendKeys(" ")
+        #$wshell.SendKeys("A")
+        start-sleep -milliseconds 300
+        $wshell.SendKeys("{TAB}")
+        start-sleep -milliseconds 300
     }
+
+    #fill text boxes
+    $wshell.SendKeys($first_name)
+
+    start-sleep -milliseconds 300
+    $wshell.SendKeys("{TAB}")
+    start-sleep -milliseconds 300
+
+    $wshell.SendKeys($last_name)
+
+    start-sleep -milliseconds 300
+    $wshell.SendKeys("{TAB}")
+    start-sleep -milliseconds 300
+
+    $wshell.SendKeys($email)
+
+    start-sleep -milliseconds 300
+    $wshell.SendKeys("{TAB}")
+    start-sleep -milliseconds 300
+
+    $wshell.SendKeys($zip)
+
+    start-sleep -milliseconds 300
+    $wshell.SendKeys("{TAB}")
+    start-sleep -milliseconds 300
+
+
+    # skip then check I have read req rad btn
+    $wshell.SendKeys("{TAB}")
+    start-sleep -milliseconds 300
+    $wshell.SendKeys(" ")
+    start-sleep -milliseconds 300
+
+
+    # hit sumbit btn
+    $wshell.SendKeys("{TAB}")
+    start-sleep -milliseconds 300
+    $wshell.SendKeys("{TAB}")
+    start-sleep -milliseconds 300
+    $wshell.SendKeys("{ENTER}")
+
+
 }
 
 
@@ -188,14 +177,14 @@ function init_submit_1_acc
 
 function read_init_submit_data
 {
-        $row_l = @()
-        $configCSV = import-csv $CONFIG_FILE_PATH
+    $row_l = @()
+    $configCSV = import-csv $CONFIG_FILE_PATH
 
-        ForEach( $row in $configCSV )
-        {
-            $row_l += $row
-        }
-        return $row_l
+    ForEach( $row in $configCSV )
+    {
+        $row_l += $row
+    }
+    return $row_l
 }
 
 
@@ -208,7 +197,9 @@ function read_init_submit_data
 
 $row_l = read_init_submit_data
 Write-Output $row_l[0]
-$row_num = 202
+Write-Output $row_l[1].first_name
+Write-Output $row_l[2]
+$row_num = 1
 
 while($true)
 {
@@ -219,15 +210,18 @@ while($true)
         Add-Content $FAILED_EMAILS_PATH $row_l[$row_num - 1].email 
         Write-Output "added email to fail file  " $row_l[$row_num - 1].email 
     }
+    elseif ($user_input -eq 's')
+    {
+        cmd /c $BRAVE_SHORTCUT_PATH # open new brave window
+        #exit #```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+    }
     else
     {
-        if ($user_input -eq 's')
-        {
-            set_up_next_round
-            exit #```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
-        }
+        Write-Output "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         Write-Host $row_l[$row_num].email
         write-host $row_num
+
+        start-sleep -milliseconds 2600
         init_submit_1_acc $row_l[$row_num].first_name $row_l[$row_num].last_name $row_l[$row_num].email $row_l[$row_num].zip
         $row_num += 1
     }
