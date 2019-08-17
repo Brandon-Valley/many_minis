@@ -11,11 +11,15 @@ param ( [parameter(Mandatory=$true)] [string] $first_name,
 
 #miliseconds
 $DEFAULT_WAIT_TIME = 100 
-$OPEN_URL_WAIT_TIME = 2500
+$OPEN_URL_WAIT_TIME = 4500
+$NEW_TAB_WAIT_TIME = 1000
 
 $BRAVE_SHORTCUT_PATH = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk"
 $FOUNDATION_URL = "https://googlenest.reevefoundation.org"
 
+$DEFAULT_USER_DATA_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\User Data"
+$BRAVE_APPDATA_PATH = "C:\Users\Brandon\AppData\Local\BraveSoftware\Brave-Browser"
+$BRAVE_APPDATA_USER_DATA_PATH = $BRAVE_APPDATA_PATH + "\User Data"
 
 $CONFIG_FILE_PATH   = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\second_trys.csv" #"C:\Users\Brandon\Documents\Personal_Projects\many_mini\scripts\init_submit\init_sumbit_data.csv"
 $FAILED_EMAILS_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\failed_emails.txt"
@@ -33,19 +37,16 @@ $NUM_TABS_TO_FIRST_RAD_BTN_D = @{"chrome"    = 23 #12:41 - 1st time hit 2:44
                                  "internet explorer" = 33} # got foucus once but never again, caught on 2nd try with notepad
 
 
-<#
-
-function open_new_foundation_tab
+function close_round
 {
 
-    $wshell.SendKeys("^{t}") # open new tab
-    start-sleep -milliseconds $OPEN_URL_WAIT_TIME
-    $wshell.SendKeys("$FOUNDATION_URL")
-    start-sleep -milliseconds $DEFAULT_WAIT_TIME
-    $wshell.SendKeys("{ENTER}")
-}
-#>
+    taskkill /IM "brave.exe" /F /s # close brave window
 
+    
+    
+    #Remove-Item –path $BRAVE_APPDATA_USER_DATA_PATH –recurse # delete user data
+    #Copy-Item -Path $DEFAULT_USER_DATA_PATH -Destination $BRAVE_APPDATA_PATH # copy user data with just default in it so the window will appear in the same spot
+}
 
 
 
@@ -74,7 +75,7 @@ function init_submit_1_acc
 
     # open new foundation tab
     $wshell.SendKeys("^{t}") # open new tab
-    start-sleep -milliseconds $OPEN_URL_WAIT_TIME
+    start-sleep -milliseconds $NEW_TAB_WAIT_TIME
     $wshell.SendKeys("$FOUNDATION_URL")
     start-sleep -milliseconds $DEFAULT_WAIT_TIME
     $wshell.SendKeys("{ENTER}")
@@ -199,7 +200,7 @@ $row_l = read_init_submit_data
 Write-Output $row_l[0]
 Write-Output $row_l[1].first_name
 Write-Output $row_l[2]
-$row_num = 1
+$row_num = 10
 
 while($true)
 {
@@ -213,7 +214,10 @@ while($true)
     elseif ($user_input -eq 's')
     {
         cmd /c $BRAVE_SHORTCUT_PATH # open new brave window
-        #exit #```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+    }
+    elseif ($user_input -eq 'e')
+    {
+        close_round
     }
     else
     {
@@ -221,7 +225,7 @@ while($true)
         Write-Host $row_l[$row_num].email
         write-host $row_num
 
-        start-sleep -milliseconds 2600
+        #start-sleep -milliseconds 2600
         init_submit_1_acc $row_l[$row_num].first_name $row_l[$row_num].last_name $row_l[$row_num].email $row_l[$row_num].zip
         $row_num += 1
     }
