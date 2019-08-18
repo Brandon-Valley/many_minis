@@ -5,7 +5,7 @@ Set-ExecutionPolicy RemoteSigned
 
 #miliseconds
 $DEFAULT_WAIT_TIME = 100 
-$OPEN_URL_WAIT_TIME = 4500
+$OPEN_URL_WAIT_TIME = 5500
 $NEW_TAB_WAIT_TIME = 1000
 
 $FOUNDATION_URL = "https://googlenest.reevefoundation.org"
@@ -16,7 +16,7 @@ $DEFAULT_USER_DATA_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_min
 $BRAVE_APPDATA_PATH = "C:\Users\Brandon\AppData\Local\BraveSoftware\Brave-Browser"
 $BRAVE_APPDATA_USER_DATA_PATH = $BRAVE_APPDATA_PATH + "\User Data"
 
-$CONFIG_FILE_PATH   = "C:\Users\Brandon\Documents\Personal_Projects\many_mini\scripts\init_submit\init_sumbit_data.csv"
+$CONFIG_FILE_PATH   = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\init_sumbit_data.csv"
 $FAILED_EMAILS_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\failed_emails.txt"
 
 
@@ -51,13 +51,13 @@ function init_submit_1_acc
 
      
     $wshell = New-Object -ComObject wscript.shell;
-    #$wshell.AppActivate('Chrome')
     $wshell.AppActivate($browser)
-    #$wshell.AppActivate('notepad')
+
 
 
 
     # open new foundation tab
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
     $wshell.SendKeys("^{t}") # open new tab
     start-sleep -milliseconds $NEW_TAB_WAIT_TIME
     $wshell.SendKeys("$FOUNDATION_URL")
@@ -68,7 +68,7 @@ function init_submit_1_acc
 
         
     # get to first radio btn
-    For ($i=0; $i -le $NUM_TABS_TO_FIRST_RAD_BTN_D[$browser] ; $i++) {
+    For ($i=0; $i -le 23 ; $i++) {
         $wshell.SendKeys("{TAB}")
         start-sleep -milliseconds $DEFAULT_WAIT_TIME
         }
@@ -154,8 +154,12 @@ Write-Output $row_l[1].first_name
 Write-Output $row_l[2]
 
 
-$row_num = 204 #  <------------------------
+$row_num = 280 #  <------------------------
 
+
+
+$wshell = New-Object -ComObject wscript.shell;
+$wshell.AppActivate($browser)
 
 
 while($true)
@@ -167,19 +171,35 @@ while($true)
         Add-Content $FAILED_EMAILS_PATH $row_l[$row_num - 1].email 
         Write-Output "added email to fail file  " $row_l[$row_num - 1].email 
     }
-    elseif ($user_input -eq 's') # start
-    {
-        Start-Process $BRAVE_EXE_PATH
-        start-sleep -milliseconds 1000
-        $wshell.SendKeys("{ENTER}") # get rid of "Restore Pages?"
 
-    }
     elseif ($user_input -eq 'e') # end
     {
         close_round
     }
     else
     {
+        if ($user_input -eq 'r') # redo
+        {
+            $row_num -= 1
+        }
+        elseif ($user_input -eq 's') # start
+        {
+            Start-Process $BRAVE_EXE_PATH
+            start-sleep -milliseconds 1000
+            $wshell.SendKeys("{ENTER}") # get rid of "Restore Pages?"
+
+            # open new foundation tab
+            start-sleep -milliseconds $DEFAULT_WAIT_TIME
+            $wshell.SendKeys("^{t}") # open new tab
+            start-sleep -milliseconds $NEW_TAB_WAIT_TIME
+            $wshell.SendKeys("$FOUNDATION_URL")
+            start-sleep -milliseconds $DEFAULT_WAIT_TIME
+            $wshell.SendKeys("{ENTER}")
+            start-sleep -milliseconds 7000
+
+        }
+
+
         Write-Host $row_l[$row_num].email
         write-host $row_num
 
