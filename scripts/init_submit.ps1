@@ -100,15 +100,6 @@ function init_submit_1_acc
 
     }
 
-    <#
-    #close current tab then open a new one from the link
-    start-sleep -milliseconds 1000 # not sure if this needs to be longer than default
-    $wshell.SendKeys("^{w}") #close cur tab
-    start-sleep -milliseconds $DEFAULT_WAIT_TIME
-    $wshell.SendKeys("{ENTER}")
-    start-sleep -milliseconds $OPEN_URL_WAIT_TIME # need to wait a bit longer for page to load
-    #start-sleep 50000 #`````````````````````````````````````````````````````````````````````````````````````
-    #>
 
         
     # get to first radio btn
@@ -200,36 +191,38 @@ function read_init_submit_data
 
 
 
-
-
-
 $row_l = read_init_submit_data
 Write-Output $row_l[0]
 Write-Output $row_l[1].first_name
 Write-Output $row_l[2]
-$row_num = 15
+
+
+$row_num = 20 #  <------------------------
+
+
 
 while($true)
 {
     $user_input = Read-Host
         
-    if ($user_input -eq 'f')
+    if ($user_input -eq 'f') # fail
     {
         Add-Content $FAILED_EMAILS_PATH $row_l[$row_num - 1].email 
         Write-Output "added email to fail file  " $row_l[$row_num - 1].email 
     }
-    elseif ($user_input -eq 's')
+    elseif ($user_input -eq 's') # start
     {
-        #cmd /c $BRAVE_SHORTCUT_PATH # open new brave window
         Start-Process $BRAVE_EXE_PATH
+        start-sleep -milliseconds 3000
+        $wshell.SendKeys("{ENTER}") # get rid of "Restore Pages?"
+
     }
-    elseif ($user_input -eq 'e')
+    elseif ($user_input -eq 'e') # end
     {
         close_round
     }
     else
     {
-        Write-Output "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         Write-Host $row_l[$row_num].email
         write-host $row_num
 
