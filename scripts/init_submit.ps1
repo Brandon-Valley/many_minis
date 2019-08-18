@@ -40,12 +40,17 @@ $NUM_TABS_TO_FIRST_RAD_BTN_D = @{"chrome"    = 23 #12:41 - 1st time hit 2:44
 function close_round
 {
 
-    taskkill /IM "brave.exe" /F /s # close brave window
+    #taskkill /S /IM "brave.exe" /F  # close brave window
+    #START /wait taskkill  /im "brave.exe" /f
+    taskkill /IM "brave.exe" /F /FI "STATUS eq RUNNING"  # close brave window
+    
+    # YES, YOU NEED BOTH OF THESE!!!
+    Remove-Item –path $BRAVE_APPDATA_USER_DATA_PATH –recurse -Force -ErrorAction SilentlyContinue # delete user data
+    Remove-Item –path $BRAVE_APPDATA_USER_DATA_PATH –recurse -Force -ErrorAction SilentlyContinue # delete user data
 
-    
-    
-    #Remove-Item –path $BRAVE_APPDATA_USER_DATA_PATH –recurse # delete user data
-    #Copy-Item -Path $DEFAULT_USER_DATA_PATH -Destination $BRAVE_APPDATA_PATH # copy user data with just default in it so the window will appear in the same spot
+    #rm -r $BRAVE_APPDATA_USER_DATA_PATH -force
+    #start-sleep -milliseconds $DEFAULT_WAIT_TIME
+    Copy-Item -Path $DEFAULT_USER_DATA_PATH –recurse -Destination $BRAVE_APPDATA_PATH # copy user data with just default in it so the window will appear in the same spot
 }
 
 
