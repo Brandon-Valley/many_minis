@@ -18,25 +18,11 @@ $BRAVE_APPDATA_USER_DATA_PATH = $BRAVE_APPDATA_PATH + "\User Data"
 
 $CONFIG_FILE_PATH   = "C:\Users\Brandon\Documents\Personal_Projects\many_mini\scripts\init_submit\init_sumbit_data.csv"
 $FAILED_EMAILS_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\failed_emails.txt"
-$NUM_TABS_TO_LINK = 19
-$NUM_TABS_TO_FIRST_RAD_BTN_D = @{"chrome"    = 23 #12:41 - 1st time hit 2:44
-                                 "firefox"   = 29
-                                 "opera"     = 23
-                                 "edge"      = 23 # :(
-                                 "brave"     = 23 # caught 1st try 3:04
-                                 "icedragon" = 29
-                                 "Maxthon (32 bit)" = 23 # :( - hit 1st time with notepad
-                                 "tor browser"      = 29
-                                 "slimbrowser"      = 29
-                                 "notepad"           = 31
-                                 "internet explorer" = 33} # got foucus once but never again, caught on 2nd try with notepad
+
 
 
 function close_round
 {
-
-    #taskkill /S /IM "brave.exe" /F  # close brave window
-    #START /wait taskkill  /im "brave.exe" /f
     taskkill /IM "brave.exe" /F /FI "STATUS eq RUNNING"  # close brave window
     
     # YES, YOU NEED BOTH OF THESE!!!
@@ -50,8 +36,6 @@ function close_round
 
 
 
-# must start from https://googlenest.reevefoundation.org/ after getting to it by clicking link on
-# https://www.christopherreeve.org/about-us/press-releases/google-nest-partners-with-the-christopher-dana-reeve-foundation-to-improve-independence-for-individuals-living-with-paralysis
 
 function init_submit_1_acc
 {
@@ -82,30 +66,11 @@ function init_submit_1_acc
     start-sleep -milliseconds $OPEN_URL_WAIT_TIME
 
 
-
-    # for unknown browser, activate notepad and click on the browser befor the delay is up
-    # might only be for Yandex but need to use tabs to get to link, not click, or else 
-    # you cant open the page again with ENTER
-    if ($browser -eq "notepad")
-    {
-        $wshell.SendKeys("about to start")
-        start-sleep -milliseconds 1000
-
-    }
-
-
         
     # get to first radio btn
     For ($i=0; $i -le $NUM_TABS_TO_FIRST_RAD_BTN_D[$browser] ; $i++) {
-    
         $wshell.SendKeys("{TAB}")
-        #$wshell.SendKeys("A")
-        #Write-Output "sent tab"
         start-sleep -milliseconds $DEFAULT_WAIT_TIME
-        #sleep .1
-
-        #Start-Sleep -s 0.5
-
         }
 
 
@@ -113,7 +78,6 @@ function init_submit_1_acc
     For ($i=0; $i -le 2; $i++) 
     {
         $wshell.SendKeys(" ")
-        #$wshell.SendKeys("A")
         start-sleep -milliseconds $DEFAULT_WAIT_TIME
         $wshell.SendKeys("{TAB}")
         start-sleep -milliseconds $DEFAULT_WAIT_TIME
@@ -223,18 +187,5 @@ while($true)
         init_submit_1_acc $row_l[$row_num].first_name $row_l[$row_num].last_name $row_l[$row_num].email $row_l[$row_num].zip
         $row_num += 1
     }
-
-
-
-    
 }
 
-
-#Write-Output $row_l
-
-
-
-
-
-#init_submit_1_acc "bob" "man" "111@gmail.com" "10001"
-#init_submit_1_acc $first_name $last_name $email $zip
