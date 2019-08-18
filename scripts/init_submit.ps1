@@ -17,6 +17,8 @@ $NEW_TAB_WAIT_TIME = 1000
 $BRAVE_SHORTCUT_PATH = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk"
 $FOUNDATION_URL = "https://googlenest.reevefoundation.org"
 
+$BRAVE_EXE_PATH = "C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\brave.exe"
+
 $DEFAULT_USER_DATA_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\User Data"
 $BRAVE_APPDATA_PATH = "C:\Users\Brandon\AppData\Local\BraveSoftware\Brave-Browser"
 $BRAVE_APPDATA_USER_DATA_PATH = $BRAVE_APPDATA_PATH + "\User Data"
@@ -218,7 +220,8 @@ while($true)
     }
     elseif ($user_input -eq 's')
     {
-        cmd /c $BRAVE_SHORTCUT_PATH # open new brave window
+        #cmd /c $BRAVE_SHORTCUT_PATH # open new brave window
+        Start-Process $BRAVE_EXE_PATH
     }
     elseif ($user_input -eq 'e')
     {
