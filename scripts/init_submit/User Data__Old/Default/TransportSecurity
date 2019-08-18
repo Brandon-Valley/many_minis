@@ -1,0 +1,14 @@
+{
+   "g0Pb8dycxtYLjvvzHGS0co3HN6D4eMOOkoMIKVCnQn0=": {
+      "expect_ct": {
+         "expect_ct_enforce": false,
+         "expect_ct_expiry": 1566689253.896567,
+         "expect_ct_observed": 1566084453.896567,
+         "expect_ct_report_uri": "https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      },
+      "expiry": 0.0,
+      "mode": "default",
+      "sts_include_subdomains": false,
+      "sts_observed": 0.0
+   }
+}
