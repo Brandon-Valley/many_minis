@@ -207,12 +207,12 @@ $row_l = read_init_submit_data
 Write-Output $row_l[0]
 Write-Output $row_l[1].first_name
 Write-Output $row_l[2]
-$row_num = 13
+$row_num = 15
 
 while($true)
 {
     $user_input = Read-Host
-    
+        
     if ($user_input -eq 'f')
     {
         Add-Content $FAILED_EMAILS_PATH $row_l[$row_num - 1].email 
