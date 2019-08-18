@@ -1,20 +1,13 @@
 ﻿
 Set-ExecutionPolicy RemoteSigned
 
-<#
 
-param ( [parameter(Mandatory=$true)] [string] $first_name,
-        [parameter(Mandatory=$true)] [String] $last_name,
-        [parameter(Mandatory=$true)] [String] $email,
-        [parameter(Mandatory=$true)] [String] $zip)
-        #>
 
 #miliseconds
 $DEFAULT_WAIT_TIME = 100 
 $OPEN_URL_WAIT_TIME = 4500
 $NEW_TAB_WAIT_TIME = 1000
 
-$BRAVE_SHORTCUT_PATH = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk"
 $FOUNDATION_URL = "https://googlenest.reevefoundation.org"
 
 $BRAVE_EXE_PATH = "C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\brave.exe"
@@ -23,7 +16,7 @@ $DEFAULT_USER_DATA_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_min
 $BRAVE_APPDATA_PATH = "C:\Users\Brandon\AppData\Local\BraveSoftware\Brave-Browser"
 $BRAVE_APPDATA_USER_DATA_PATH = $BRAVE_APPDATA_PATH + "\User Data"
 
-$CONFIG_FILE_PATH   = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\second_trys.csv" #"C:\Users\Brandon\Documents\Personal_Projects\many_mini\scripts\init_submit\init_sumbit_data.csv"
+$CONFIG_FILE_PATH   = "C:\Users\Brandon\Documents\Personal_Projects\many_mini\scripts\init_submit\init_sumbit_data.csv"
 $FAILED_EMAILS_PATH = "C:\Users\Brandon\Documents\Personal_Projects\many_minis\scripts\init_submit\failed_emails.txt"
 $NUM_TABS_TO_LINK = 19
 $NUM_TABS_TO_FIRST_RAD_BTN_D = @{"chrome"    = 23 #12:41 - 1st time hit 2:44
@@ -121,49 +114,49 @@ function init_submit_1_acc
     {
         $wshell.SendKeys(" ")
         #$wshell.SendKeys("A")
-        start-sleep -milliseconds 300
+        start-sleep -milliseconds $DEFAULT_WAIT_TIME
         $wshell.SendKeys("{TAB}")
-        start-sleep -milliseconds 300
+        start-sleep -milliseconds $DEFAULT_WAIT_TIME
     }
 
     #fill text boxes
     $wshell.SendKeys($first_name)
 
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
     $wshell.SendKeys("{TAB}")
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
 
     $wshell.SendKeys($last_name)
 
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
     $wshell.SendKeys("{TAB}")
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
 
     $wshell.SendKeys($email)
 
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
     $wshell.SendKeys("{TAB}")
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
 
     $wshell.SendKeys($zip)
 
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
     $wshell.SendKeys("{TAB}")
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
 
 
     # skip then check I have read req rad btn
     $wshell.SendKeys("{TAB}")
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
     $wshell.SendKeys(" ")
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
 
 
     # hit sumbit btn
     $wshell.SendKeys("{TAB}")
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
     $wshell.SendKeys("{TAB}")
-    start-sleep -milliseconds 300
+    start-sleep -milliseconds $DEFAULT_WAIT_TIME
     $wshell.SendKeys("{ENTER}")
 
 
@@ -197,7 +190,7 @@ Write-Output $row_l[1].first_name
 Write-Output $row_l[2]
 
 
-$row_num = 20 #  <------------------------
+$row_num = 204 #  <------------------------
 
 
 
@@ -213,7 +206,7 @@ while($true)
     elseif ($user_input -eq 's') # start
     {
         Start-Process $BRAVE_EXE_PATH
-        start-sleep -milliseconds 3000
+        start-sleep -milliseconds 1000
         $wshell.SendKeys("{ENTER}") # get rid of "Restore Pages?"
 
     }
